@@ -3,5 +3,8 @@
     <string name="text1">Hello</string>
     <string name="text2" translatable="false">请输入摄氏度</string>
     <string name="text3" translatable="false">结果为：</string>
-    <string name="btn1" translatable="false">转换为华氏温度</string>
+    <string name="btn1" translatable="false">+3 points</string>
+    <string name="btn2" translatable="false">+2 points</string>
+    <string name="btn3" translatable="false">+1 points</string>
+    <string name="btn4" translatable="false">reset</string>
 </resources>

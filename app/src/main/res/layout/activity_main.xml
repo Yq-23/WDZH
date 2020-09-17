@@ -19,30 +19,59 @@
         android:text="@string/text1"
         android:textSize="35sp" />
 
-    <EditText
-        android:hint="@string/text2"
-        android:id="@+id/inp"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        android:visibility="visible" />
+        android:gravity="center"
+        android:text="TeamA"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="40sp"/>
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/btn1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/btn1"
         android:textSize="22sp"
-        android:onClick="btn"/>
+        android:onClick="btn1" />
 
-    <TextView
-        android:id="@+id/out"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="结果是："
-        android:textSize="25sp"/>
+        android:layout_marginBottom="20dp"
+        android:text="@string/btn2"
+        android:textSize="22sp"
+        android:onClick="btn2" />
+
+    <Button
+        android:id="@+id/btn3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:text="@string/btn3"
+        android:textSize="22sp"
+        android:onClick="btn3" />
+
+    <Button
+        android:id="@+id/btn4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn4"
+        android:textSize="22sp"
+        android:onClick="btn4" />
 
 </LinearLayout>
