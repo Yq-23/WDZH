@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity{
 
-    //private static final String TAG = "MainActivity";
     TextView outA;
     TextView outB;
     //EditText inp;
