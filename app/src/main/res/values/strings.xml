@@ -1,10 +1,16 @@
 <resources>
-    <string name="app_name">CourtCounter</string>
-    <string name="text1">CourtCounter</string>
-    <string name="text2" translatable="false">请输入摄氏度</string>
-    <string name="text3" translatable="false">结果为：</string>
-    <string name="btn1" translatable="false">+3 points</string>
-    <string name="btn2" translatable="false">+2 points</string>
-    <string name="btn3" translatable="false">free throw</string>
+    <string name="app_name">Hello</string>
+    <string name="text1" translatable="false">Hello</string>
+    <string name="hint" translatable="false">InputRMB</string>
+    <string name="text3">RMB conversion</string>
+    <string name="text4" translatable="false">ExchangeRate</string>
+    <string name="btn1">dollar</string>
+    <string name="btn2">euro</string>
+    <string name="btn3">won</string>
     <string name="btn4" translatable="false">reset</string>
+    <string name="btn_open" translatable="false">config</string>
+    <string name="btn_save" translatable="false">save</string>
+    <string name="menu_1" translatable="false">Setting</string>
+    <string name="menu_2">Open</string>
+    <string name="menu_3">Exit</string>
 </resources>

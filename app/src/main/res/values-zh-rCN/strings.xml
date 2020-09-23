@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">应用</string>
-    <string name="text1">生日快乐！</string>
+    <string name="btn1">美元</string>
+    <string name="btn2">欧元</string>
+    <string name="btn3">韩元</string>
+    <string name="text3">人民币转换</string>
+    <string name="menu_2">open</string>
+    <string name="menu_3">exit</string>
 </resources>
