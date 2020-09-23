@@ -54,10 +54,6 @@ public class MainActivity2 extends AppCompatActivity {
             double newEuro = Double.parseDouble(txt_euro.getText().toString());
             double newWon = Double.parseDouble(txt_won.getText().toString());
 
-            /*intent_save.putExtra("key_dollar",newDollar);
-            intent_save.putExtra("key_euro",newEuro);
-            intent_save.putExtra("key_won",newWon);*/
-
             bdl.putDouble("key_dollar",newDollar);
             bdl.putDouble("key_euro",newEuro);
             bdl.putDouble("key_won",newWon);

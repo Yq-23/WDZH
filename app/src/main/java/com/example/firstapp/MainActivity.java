@@ -89,10 +89,6 @@ public class MainActivity extends AppCompatActivity{
             euroRate = bundle.getDouble("key_euro",0.1f);
             wonRate = bundle.getDouble("key_won",0.1f);
 
-            /*dollarRate = data.getDoubleExtra("key_dollar",0.1f);
-            euroRate = data.getDoubleExtra("key_euro",0.1f);
-            wonRate = data.getDoubleExtra("key_won",0.1f);*/
-
             Log.i(TAG,"onActivityResult: dollarRate=" + dollarRate);
             Log.i(TAG,"onActivityResult: euroRate=" + euroRate);
             Log.i(TAG,"onActivityResult: wonRate=" + wonRate);
