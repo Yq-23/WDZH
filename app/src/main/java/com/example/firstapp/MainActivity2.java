@@ -15,10 +15,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -124,18 +130,68 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
     public void run() {
         Log.i(TAG,"run:run()......");
 
-        URL url = null;
         try{
-            url = new URL("https://www.swufe.edu.cn");
+            /*url = new URL("https://www.usd-cny.com/bankofchina.htm");
             HttpsURLConnection http = (HttpsURLConnection)url.openConnection();
             InputStream in = http.getInputStream();
             String html = inputStream2String(in);
             Log.i(TAG, "run:html=" + html);
             Message msg = handler.obtainMessage(5);
             msg.obj = html;
-            handler.sendMessage(msg);
+            handler.sendMessage(msg);*/
+            float dollar,euro,won;
+            //方法一：
+            String url = "http://www.usd-cny.com/bankofchina.htm";
+            Document doc = Jsoup.connect(url).get();
+            Log.i(TAG, "run: "+ doc.title());
+            Elements tables = doc.getElementsByTag("table");
+            Element table0 = tables.get(0);
+            // 获取 TD 中的数据
+            Elements tds = table0.getElementsByTag("td");
+            for(int i=0; i<tds.size(); i+=6){
+                Element td1 = tds.get(i);
+                Element td2 = tds.get(i + 5);
+                String str1 = td1.text();
+                String val = td2.text();
+                //Log.i(TAG, "run: " + str1 + "==>" + val);
+                float v = 100f / Float.parseFloat(val);
+                // 获取数据并返回
+                if(togbk(str1).equals("美元")){
+                    dollar = v;
+                    Log.i(TAG, "dollar_rate" + dollar);
+                    Log.i(TAG, "run: " + str1 + "==>" + val);
+                }else if(togbk(str1).equals("欧元")){
+                    euro = v;
+                    Log.i(TAG, "euro_rate" + euro);
+                    Log.i(TAG, "run: " + str1 + "==>" + val);
+                }else if(togbk(str1).equals("韩元")){
+                    won = v;
+                    Log.i(TAG, "won_rate" +won);
+                    Log.i(TAG, "run: " + str1 + "==>" + val);
+                }else{
+                    Log.i(TAG, "Failed!");
+                }
+            }
 
-        } catch (MalformedURLException e) {
+            //方法二：
+            /*Element table = doc.getElementsByTag("table").first();
+            Elements trs = table.getElementsByTag("tr");
+            for(Element tr:trs){
+                Elements tds = tr.getElementsByTag("td");
+                if(tds.size>0){
+                    //获取数据
+                    String td1 = tds.get(0).text();
+                    String td2 = tds.get(5).text();
+                }
+            }*/
+
+            /*SharedPreferences sp = getSharedPreferences("Myrate", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat("dollar_rate",dollar);
+            editor.putFloat("euro_rate",euro);
+            editor.putFloat("won_rate",won);
+            editor.apply();*/
+        }catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,7 +210,7 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
         final int bufferSize = 1024;
         final char[] buffer = new char[bufferSize];
         final StringBuilder out = new StringBuilder();
-        Reader in = new InputStreamReader(inputStream, "utf-8");
+        Reader in = new InputStreamReader(inputStream, "gb2312");
         while(true){
             int rsz = in.read(buffer, 0, buffer.length);
             if(rsz < 0)
@@ -162,5 +218,17 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
             out.append(buffer, 0, rsz);
         }
         return out.toString();
+    }
+
+    //编码转换
+    public static String togbk(String str) {
+        String result = null;
+        try {
+            result = new String(str.toString().getBytes("UTF-8"), "gbk");
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
     }
 }

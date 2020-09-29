@@ -7,7 +7,6 @@
     <string name="btn1">dollar</string>
     <string name="btn2">euro</string>
     <string name="btn3">won</string>
-    <string name="btn4" translatable="false">reset</string>
     <string name="btn_open" translatable="false">config</string>
     <string name="btn_save" translatable="false">save</string>
     <string name="menu_1" translatable="false">Setting</string>

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
         dollarRate = sharedPreferences.getFloat("dollar_rate",0.1f);
         euroRate = sharedPreferences.getFloat("euro_rate",0.1f);
         wonRate = sharedPreferences.getFloat("won_rate",0.1f);
-        
+
     }
 
     public void reversion(View btn){
