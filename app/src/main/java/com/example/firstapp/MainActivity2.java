@@ -139,7 +139,7 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
             Message msg = handler.obtainMessage(5);
             msg.obj = html;
             handler.sendMessage(msg);*/
-            float dollar,euro,won;
+            float dollar = 0, euro = 0, won = 0;
             //方法一：
             String url = "http://www.usd-cny.com/bankofchina.htm";
             Document doc = Jsoup.connect(url).get();
@@ -155,24 +155,25 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
                 String val = td2.text();
                 //Log.i(TAG, "run: " + str1 + "==>" + val);
                 float v = 100f / Float.parseFloat(val);
+                float rate =(float)(Math.round(v*100))/100;
                 // 获取数据并返回
-                if(togbk(str1).equals("美元")){
-                    dollar = v;
-                    Log.i(TAG, "dollar_rate" + dollar);
-                    Log.i(TAG, "run: " + str1 + "==>" + val);
-                }else if(togbk(str1).equals("欧元")){
-                    euro = v;
-                    Log.i(TAG, "euro_rate" + euro);
-                    Log.i(TAG, "run: " + str1 + "==>" + val);
-                }else if(togbk(str1).equals("韩元")){
-                    won = v;
-                    Log.i(TAG, "won_rate" +won);
-                    Log.i(TAG, "run: " + str1 + "==>" + val);
-                }else{
-                    Log.i(TAG, "Failed!");
+                if(str1.equals("美元")){
+                    dollar = rate;
+                    Log.i(TAG, "run: dollar_rate==>" + dollar);
+                    txt_dollar.setText(String.valueOf(dollar));
+
+                }else if(str1.equals("欧元")){
+                    euro = rate;
+                    Log.i(TAG, "run: euro_rate==>" + euro);
+                    txt_euro.setText(String.valueOf(euro));
+
+                }else if(str1.equals("韩元")){
+                    won = rate;
+                    Log.i(TAG, "run: won_rate==>" + won);
+                    txt_won.setText(String.valueOf(won));
+
                 }
             }
-
             //方法二：
             /*Element table = doc.getElementsByTag("table").first();
             Elements trs = table.getElementsByTag("tr");
@@ -184,13 +185,7 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
                     String td2 = tds.get(5).text();
                 }
             }*/
-
-            /*SharedPreferences sp = getSharedPreferences("Myrate", Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putFloat("dollar_rate",dollar);
-            editor.putFloat("euro_rate",euro);
-            editor.putFloat("won_rate",won);
-            editor.apply();*/
+            
         }catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -218,17 +213,5 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
             out.append(buffer, 0, rsz);
         }
         return out.toString();
-    }
-
-    //编码转换
-    public static String togbk(String str) {
-        String result = null;
-        try {
-            result = new String(str.toString().getBytes("UTF-8"), "gbk");
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return result;
     }
 }

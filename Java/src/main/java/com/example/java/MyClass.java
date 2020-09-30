@@ -29,15 +29,15 @@ public class MyClass {
                 //System.out.println("run: " + str1 + "==>" + val);
                 float v = 100f / Float.parseFloat(val);
                 // 获取数据并返回
-                if(togbk(str1).equals("美元")){
+                if(toutf8(str1).equals("美元")){
                     dollar = v;
                     System.out.println("run: " + str1 + "==>" + val);
                     System.out.println("dollar_rate = " + dollar);
-                }else if(togbk(str1).equals("欧元")){
+                }else if(toutf8(str1).equals("欧元")){
                     euro = v;
                     System.out.println("run: " + str1 + "==>" + val);
                     System.out.println("euro_rate = " + euro);
-                }else if(togbk(str1).equals("韩元")){
+                }else if(toutf8(str1).equals("韩元")){
                     won = v;
                     System.out.println("run: " + str1 + "==>" + val);
                     System.out.println("won_rate = " + won);
@@ -53,7 +53,7 @@ public class MyClass {
         }
     }
 
-    public static String togbk(String str) {
+    public static String toutf8(String str) {
         String result = null;
         try {
             result = new String(str.toString().getBytes("UTF-8"), "gbk");
