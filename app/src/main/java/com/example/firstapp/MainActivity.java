@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        out = (TextView)findViewById(R.id.out);
+        out = (TextView)findViewById(R.id.outdetail);
         inp = (EditText)findViewById(R.id.inp);
 
         SharedPreferences sharedPreferences = getSharedPreferences("Myrate", Activity.MODE_PRIVATE);
@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity{
         else if(btn.getId()==R.id.btn_open1){
             Intent list = new Intent(this,List_Activity.class);
             startActivityForResult(list,2);
+        }else if(btn.getId()==R.id.btn_delete){
+            Intent listdelete = new Intent(this,DeleteActivity.class);
+            startActivityForResult(listdelete,3);
         }
     }
 

@@ -44,6 +44,7 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
     EditText txt_dollar,txt_euro,txt_won;
     Handler handler;
     String dt,ud;
+    ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,6 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         dt = format.format(date);
         ud = sp.getString("date", "");
-        Log.i(TAG,"onCreate:the old_date=" + ud);
         //如果日期不匹配，则更新
         if(!ud.equals(dt)){
             Log.i(TAG,"onCreate:the new_date=" + dt);
@@ -101,11 +101,27 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
                 public void handleMessage(Message msg) {
                     if (msg.what == 5) {
                         List<String> list = (List<String>) msg.obj;
-                        ListAdapter adapter = new ArrayAdapter<String>(MainActivity2.this, android.R.layout.simple_list_item_1, list);
+                        adapter = new ArrayAdapter<String>(MainActivity2.this, android.R.layout.simple_list_item_1, list);
                         listView.setAdapter(adapter);
+                        listView.setEmptyView(findViewById(R.id.nodata));
 
                         //String str = (String) msg.obj;
                         //Log.i(TAG, "handleMessage:getMessage meg = " + str);
+                    }
+                    super.handleMessage(msg);
+
+                }
+            };
+        }else {
+            Log.i(TAG, "onCreate:the old_date=" + ud);
+            Thread t = new Thread(this);
+            t.start();
+            handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what == 5) {
+                        listView.setAdapter(adapter);
+                        listView.setEmptyView(findViewById(R.id.nodata));
                     }
                     super.handleMessage(msg);
 

@@ -8,4 +8,5 @@
     <string name="menu_2">open</string>
     <string name="menu_3">exit</string>
     <string name="btn_openlist">list</string>
+    <string name="btn_listdelete" />
 </resources>
