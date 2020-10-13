@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,7 +32,9 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
     ListView listdelete;
     Handler handler;
     ArrayAdapter adapter;
+    SimpleAdapter listItemAdapter;
     AlertDialog.Builder builder;
+    ArrayList<HashMap<String, String>> listItems = new ArrayList<HashMap<String, String>>(); ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +51,17 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 5) {
-                    List<String> list2 = (List<String>) msg.obj;
+                    /*List<String> list2 = (List<String>) msg.obj;
                     adapter = new ArrayAdapter<String>(DeleteActivity.this,
                             android.R.layout.simple_list_item_1,list2);
-                    listdelete.setAdapter(adapter);
+                    listdelete.setAdapter(adapter);*/
+                    listItems = (ArrayList<HashMap<String, String>>) msg.obj;
+                    listItemAdapter = new SimpleAdapter(DeleteActivity.this, listItems,  R.layout.list_item,
+                            new String[] { "ItemTitle", "ItemDetail" },new int[] { R.id.itemTitle, R.id.itemDetail } );
+                    listdelete.setAdapter(listItemAdapter);
+
                     //listdelete.setOnItemClickListener(DeleteActivity.this);//添加事件监听
-                    listdelete.setOnItemLongClickListener(DeleteActivity.this);
+                    listdelete.setOnItemLongClickListener(DeleteActivity.this);//添加长按事件监听
 
                 }
                 super.handleMessage(msg);
@@ -69,13 +77,13 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
             String url = "http://www.usd-cny.com/bankofchina.htm";
             Document doc = null;
             doc = Jsoup.connect(url).get();
-            Log.i(TAG, "run: "+ doc.title());
+            //Log.i(TAG, "run: "+ doc.title());
             Elements tables = doc.getElementsByTag("table");
             Element table0 = tables.get(0);
             // 获取 TD 中的数据
             Elements tds = table0.getElementsByTag("td");
-            //List<String> list2 = new ArrayList<String>();
-            ArrayList<String> list1 = new ArrayList<String>();
+            //ArrayList<String> list1 = new ArrayList<String>();
+            ArrayList<HashMap<String, String>> list1 = new ArrayList<HashMap<String, String>>();
             for(int i=0; i<tds.size(); i+=6){
                 Element td1 = tds.get(i);
                 Element td2 = tds.get(i + 5);
@@ -84,8 +92,12 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
                 //Log.i(TAG, "run: " + str1 + "==>" + val);
                 float v = 100f / Float.parseFloat(val);
                 float rate =(float)(Math.round(v*100))/100;
-                String s = (String)(str1 + "==>" + val);
-                list1.add(s);
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("ItemTitle", str1);
+                map.put("ItemDetail", String.valueOf(rate));
+                list1.add(map);
+                //String s = (String)(str1 + "==>" + val);
+                //list1.add(s);
             }
             msg.obj = list1;
             handler.sendMessage(msg);
@@ -100,20 +112,35 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "onItemClick: position=" + position);
         Log.i(TAG, "onItemClick: parent=" + parent);
-        adapter.remove(parent.getItemAtPosition(position));
+        //SimpleItemAdapter:
+        listItems.remove(position);
+        listItemAdapter.notifyDataSetChanged();
+
+        //adapter.remove(parent.getItemAtPosition(position));
         // adapter.notifyDataSetChanged()会自动调用
     }
 
     @Override
-    public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
         builder = new AlertDialog.Builder(this);
         builder.setTitle("提示")
                 .setMessage("请确认是否删除当前数据")
                 .setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         Log.i(TAG, "onItemLongClick: 对话框事件处理");
-                        adapter.remove(parent.getItemAtPosition(position));
+
+                        /*//ArrayAdapter:
+                        adapter.remove(parent.getItemAtPosition(osition));
+                        adapter.notifyDataSetChanged()会自动调用*/
+
+                        //SimpleItemAdapter:
+                        // 删除数据项
+                        listItems.remove(position);
+                        // 更新适配器
+                        listItemAdapter.notifyDataSetChanged();
+
                     }
                 }).setNegativeButton("否", null);
         builder.create().show();

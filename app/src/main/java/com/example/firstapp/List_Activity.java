@@ -90,7 +90,7 @@ public class List_Activity extends AppCompatActivity implements Runnable,Adapter
                 Element td2 = tds.get(i + 5);
                 String str1 = td1.text();
                 String val = td2.text();
-                Log.i(TAG, "run: " + str1 + "==>" + val);
+                //Log.i(TAG, "run: " + str1 + "==>" + val);
                 HashMap<String, String> map = new HashMap<String, String>();
                 float v = 100f / Float.parseFloat(val);
                 float rate =(float)(Math.round(v*100))/100;
