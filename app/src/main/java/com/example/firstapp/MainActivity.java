@@ -66,26 +66,33 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public void open(View V){
-        Intent second = new Intent(this,MainActivity2.class);
+    public void open(View btn){
+        if(btn.getId()==R.id.btn_open){
 
-        //使用Extra传递参数
+            Intent second = new Intent(this,MainActivity2.class);
+
+            //使用Extra传递参数
         /*;second.putExtra("dollar_rate_key",dollarRate);
         second.putExtra("euro_rate_key",euroRate);
         second.putExtra("won_rate_key",wonRate)*/
 
-        //使用Bundle传递参数
-        Bundle bdl = new Bundle();
-        bdl.putFloat("dollar_rate_key",dollarRate);
-        bdl.putFloat("euro_rate_key",euroRate);
-        bdl.putFloat("won_rate_key",wonRate);
-        second.putExtras(bdl);
+            //使用Bundle传递参数
+            Bundle bdl = new Bundle();
+            bdl.putFloat("dollar_rate_key",dollarRate);
+            bdl.putFloat("euro_rate_key",euroRate);
+            bdl.putFloat("won_rate_key",wonRate);
+            second.putExtras(bdl);
 
-        Log.i(TAG,"onCreate:dollarRate=" + dollarRate);
-        Log.i(TAG,"onCreate:euroRate=" + euroRate);
-        Log.i(TAG,"onCreate:wonRate=" + wonRate);
+            Log.i(TAG,"onCreate:dollarRate=" + dollarRate);
+            Log.i(TAG,"onCreate:euroRate=" + euroRate);
+            Log.i(TAG,"onCreate:wonRate=" + wonRate);
 
-        startActivityForResult(second,1);
+            startActivityForResult(second,1);
+        }
+        else if(btn.getId()==R.id.btn_open1){
+            Intent list = new Intent(this,List_Activity.class);
+            startActivityForResult(list,2);
+        }
     }
 
     @Override

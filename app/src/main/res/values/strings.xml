@@ -12,4 +12,5 @@
     <string name="menu_1" translatable="false">Setting</string>
     <string name="menu_2">Open</string>
     <string name="menu_3">Exit</string>
+    <string name="btn_openlist">list</string>
 </resources>

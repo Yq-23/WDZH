@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -28,6 +31,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -36,12 +43,20 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
     private static final String TAG = "MainActivity2";
     EditText txt_dollar,txt_euro,txt_won;
     Handler handler;
+    String dt,ud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         Intent intent = getIntent();
+
+        final ListView listView = (ListView)findViewById(R.id.mylist);
+
+        //显示列表："one", "two", "three", "four"
+        /*String data[] = {"one", "two", "three", "four"};
+        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+        listView.setAdapter(adapter);*/
 
         //使用extra获得数据
         /*double dollar2 = intent.getDoubleExtra("dollar_rate_key",0.0f);
@@ -66,21 +81,37 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
         txt_euro.setText(String.valueOf(euro2));
         txt_won.setText(String.valueOf(won2));
 
-        //开启子线程
-        Thread t = new Thread(this);
-        t.start();
+        // 每天更新一次汇率
+        // 判断Myrate文件里面所存的日期与现在的日期对比，判断是否更新
+        SharedPreferences sp = getSharedPreferences("Myrate", Activity.MODE_PRIVATE);
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        dt = format.format(date);
+        ud = sp.getString("date", "");
+        Log.i(TAG,"onCreate:the old_date=" + ud);
+        //如果日期不匹配，则更新
+        if(!ud.equals(dt)){
+            Log.i(TAG,"onCreate:the new_date=" + dt);
+            //开启子线程
+            Thread t = new Thread(this);
+            t.start();
+            //线程间消息同步
+            handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what == 5) {
+                        List<String> list = (List<String>) msg.obj;
+                        ListAdapter adapter = new ArrayAdapter<String>(MainActivity2.this, android.R.layout.simple_list_item_1, list);
+                        listView.setAdapter(adapter);
 
-        //线程间消息同步
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == 5) {
-                    String str = (String) msg.obj;
-                    Log.i(TAG, "handleMessage:getMessage meg = " + str);
+                        //String str = (String) msg.obj;
+                        //Log.i(TAG, "handleMessage:getMessage meg = " + str);
+                    }
+                    super.handleMessage(msg);
+
                 }
-                super.handleMessage(msg);
-            }
-        };
+            };
+        }
     }
 
     public void btn_save(View btn){
@@ -91,11 +122,19 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
             float newEuro = Float.parseFloat(txt_euro.getText().toString());
             float newWon = Float.parseFloat(txt_won.getText().toString());
 
+            //获得当前日期
+            Date date1 = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String d = format.format(date1);
+
+            //将汇率存入Myrate文件里面
+            // 将当前日期存入Myrate文件里面，用于更新时的比对
             SharedPreferences sp = getSharedPreferences("Myrate", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putFloat("dollar_rate",newDollar);
             editor.putFloat("euro_rate",newEuro);
             editor.putFloat("won_rate",newWon);
+            editor.putString("date",d);
             editor.apply();
 
             bdl.putFloat("dollar_rate_key",newDollar);
@@ -103,12 +142,10 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
             bdl.putFloat("won_rate_key",newWon);
             intent_save.putExtras(bdl);
 
-
             //设置resultCode及带回的数据
             setResult(1,intent_save);
             //返回到调用页面
             finish();
-
         }
     }
 
@@ -128,8 +165,13 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
 
     @Override
     public void run() {
+        /*//获取msg对象，用于返回主线程
+        Message msg = handler.obtainMessage(5);
+        //msg.what = 5;
+        msg.obj = "Hello from run()";
+        handler.sendMessage(msg);*/
         Log.i(TAG,"run:run()......");
-
+        Message msg = handler.obtainMessage(5);
         try{
             /*url = new URL("https://www.usd-cny.com/bankofchina.htm");
             HttpsURLConnection http = (HttpsURLConnection)url.openConnection();
@@ -148,32 +190,34 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
             Element table0 = tables.get(0);
             // 获取 TD 中的数据
             Elements tds = table0.getElementsByTag("td");
+            List<String> list2 = new ArrayList<String>();
             for(int i=0; i<tds.size(); i+=6){
                 Element td1 = tds.get(i);
                 Element td2 = tds.get(i + 5);
                 String str1 = td1.text();
                 String val = td2.text();
                 //Log.i(TAG, "run: " + str1 + "==>" + val);
+                String s = (String)(str1 + "==>" + val);
+                list2.add(s);
                 float v = 100f / Float.parseFloat(val);
                 float rate =(float)(Math.round(v*100))/100;
-                // 获取数据并返回
+                // 获取需要的数据并返回
                 if(str1.equals("美元")){
                     dollar = rate;
                     Log.i(TAG, "run: dollar_rate==>" + dollar);
                     txt_dollar.setText(String.valueOf(dollar));
-
                 }else if(str1.equals("欧元")){
                     euro = rate;
                     Log.i(TAG, "run: euro_rate==>" + euro);
                     txt_euro.setText(String.valueOf(euro));
-
                 }else if(str1.equals("韩元")){
                     won = rate;
                     Log.i(TAG, "run: won_rate==>" + won);
                     txt_won.setText(String.valueOf(won));
-
                 }
             }
+            msg.obj = list2;
+            handler.sendMessage(msg);
             //方法二：
             /*Element table = doc.getElementsByTag("table").first();
             Elements trs = table.getElementsByTag("tr");
@@ -185,33 +229,11 @@ public class MainActivity2 extends AppCompatActivity implements Runnable{
                     String td2 = tds.get(5).text();
                 }
             }*/
-            
+
         }catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*//获取msg对象，用于返回主线程
-        Message msg = handler.obtainMessage(5);
-        //msg.what = 5;
-        msg.obj = "Hello from run()";
-        handler.sendMessage(msg);*/
-
-    }
-
-    //输入流转字符串
-    private String inputStream2String(InputStream inputStream) throws IOException{
-        final int bufferSize = 1024;
-        final char[] buffer = new char[bufferSize];
-        final StringBuilder out = new StringBuilder();
-        Reader in = new InputStreamReader(inputStream, "gb2312");
-        while(true){
-            int rsz = in.read(buffer, 0, buffer.length);
-            if(rsz < 0)
-                break;
-            out.append(buffer, 0, rsz);
-        }
-        return out.toString();
     }
 }

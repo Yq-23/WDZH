@@ -6,61 +6,77 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-public class MyClass {
+import static java.lang.Thread.sleep;
+
+public class MyClass{
     public static void main(String[] args){
         System.out.println("Hello Studio");
         float dollar, euro, won;
-        try{
-            String url = "http://www.usd-cny.com/bankofchina.htm";
-            Document doc = Jsoup.connect(url).get();
-            System.out.println("run: "+ doc.title());
-            Elements tables = doc.getElementsByTag("table");
-            Element table0 = tables.get(0);
-            // 获取 TD 中的数据
-            Elements tds = table0.getElementsByTag("td");
-            for(int i=0; i<tds.size(); i+=6){
-                Element td1 = tds.get(i);
-                Element td2 = tds.get(i + 5);
-                String str1 = td1.text();
-                String val = td2.text();
-                //System.out.println("run: " + str1 + "==>" + val);
-                float v = 100f / Float.parseFloat(val);
-                // 获取数据并返回
-                if(toutf8(str1).equals("美元")){
-                    dollar = v;
-                    System.out.println("run: " + str1 + "==>" + val);
-                    System.out.println("dollar_rate = " + dollar);
-                }else if(toutf8(str1).equals("欧元")){
-                    euro = v;
-                    System.out.println("run: " + str1 + "==>" + val);
-                    System.out.println("euro_rate = " + euro);
-                }else if(toutf8(str1).equals("韩元")){
-                    won = v;
-                    System.out.println("run: " + str1 + "==>" + val);
-                    System.out.println("won_rate = " + won);
-                }else{
-                    System.out.println("Failed!");
+
+        //开启子线程
+        //Thread t = new Thread();
+        //t.start();
+
+        MyThread mt1 = new MyThread() ;    // 实例化对象
+        mt1.start() ;   // 调用线程主体
+    }
+
+    static class MyThread extends Thread{  // 继承Thread类，作为线程的实现类
+        public void run() {
+            while (true) {
+                try {
+                    String url = "http://www.usd-cny.com/bankofchina.htm";
+                    Document doc = Jsoup.connect(url).get();
+                    Elements tables = doc.getElementsByTag("table");
+                    Element table0 = tables.get(0);
+                    // 获取 TD 中的数据
+                    Elements tds = table0.getElementsByTag("td");
+                    List<String> list2 = new ArrayList<String>();
+                    for (int i = 0; i < tds.size(); i += 6) {
+                        Element td1 = tds.get(i);
+                        Element td2 = tds.get(i + 5);
+                        String str1 = td1.text();
+                        String val = td2.text();
+                        //Log.i(TAG, "run: " + str1 + "==>" + val);
+                        String s = (String) (str1 + "==>" + val);
+                        list2.add(s);
+                        float v = 100f / Float.parseFloat(val);
+                        float rate = (float) (Math.round(v * 100)) / 100;
+                     }
+                    System.out.println(list2);
+
+                    /*
+                    Calendar c = Calendar.getInstance();//获得系统当前日期
+                    int year = c.get(Calendar.YEAR);
+                    int moth = c.get(Calendar.MONTH) + 1;//系统日期从0开始算起
+                    int day = c.get(Calendar.DAY_OF_MONTH);
+                    int hour = c.get(Calendar.HOUR);//小时
+                    int minute = c.get(Calendar.MINUTE);//分
+                    int second = c.get(Calendar.SECOND);//秒
+
+                    System.out.println(year + " year " + moth + " month " + day + " day " + hour + " hour " + minute + " min " + second + " s ");
+                    */
+                    Thread.sleep(2000);
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
                 }
             }
-
-        }catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    public static String toutf8(String str) {
+
+    /*public static String toutf8(String str) {
         String result = null;
         try {
             result = new String(str.toString().getBytes("UTF-8"), "gbk");
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
+            //
             e.printStackTrace();
         }
         return result;
-    }
+    }*/
 }
