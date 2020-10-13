@@ -78,7 +78,7 @@ public class List_Activity extends AppCompatActivity implements Runnable,Adapter
             String url = "http://www.usd-cny.com/bankofchina.htm";
             Document doc = null;
             doc = Jsoup.connect(url).get();
-            Log.i(TAG, "run: "+ doc.title());
+            //Log.i(TAG, "run: "+ doc.title());
             Elements tables = doc.getElementsByTag("table");
             Element table0 = tables.get(0);
             // 获取 TD 中的数据
