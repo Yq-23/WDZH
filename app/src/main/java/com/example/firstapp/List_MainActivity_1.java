@@ -68,6 +68,14 @@ public class List_MainActivity_1 extends AppCompatActivity {
         if(item.getItemId()==R.id.menu1){
             //设置功能，与设置按钮的事件一样
         }
+        if(item.getItemId()==R.id.menu3){
+            //设置功能，与设置按钮的事件一样
+            Intent returnPrevious = getIntent();
+            //设置resultCode及带回的数据
+            setResult(3,returnPrevious);
+            //返回上一个界面
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 }

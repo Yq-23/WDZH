@@ -151,6 +151,14 @@ public class List_Activity extends AppCompatActivity implements Runnable,Adapter
         if(item.getItemId()==R.id.menu1){
             //设置功能，与设置按钮的事件一样
         }
+        if(item.getItemId()==R.id.menu3){
+            //设置功能，与设置按钮的事件一样
+            Intent returnMain = getIntent();
+            //设置resultCode及带回的数据
+            setResult(2,returnMain);
+            //返回主界面
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 }

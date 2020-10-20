@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "MainActivity";
@@ -23,6 +26,8 @@ public class MainActivity extends AppCompatActivity{
     float dollarRate = (float) 0.14;
     float euroRate = (float)0.22;
     float wonRate = (float)171.34;
+    //RateManager rateManager = new RateManager(this);
+    //RateItem rateItem = new RateItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void reversion(View btn){
-
         String str = inp.getText().toString();
         if(str==null || str.equals("") || str.equals(R.string.hint)){
             //no input
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity{
         else{
             float a = Float.parseFloat(str);
             if(btn.getId()==R.id.btn_dollar){
+                //rateItem = rateManager.findById(1);
+                //dollarRate = rateItem.getCurrate();
                 float b = a*dollarRate;
                 String str1 = String.format("%.4f", b).toString();
                 out.setText(str1+" dollar");

@@ -14,15 +14,22 @@ import static java.lang.Thread.sleep;
 
 public class MyClass{
     public static void main(String[] args){
+        System.out.println();
         System.out.println("Hello Studio");
         float dollar, euro, won;
 
-        //开启子线程
-        //Thread t = new Thread();
-        //t.start();
-
-        MyThread mt1 = new MyThread() ;    // 实例化对象
-        mt1.start() ;   // 调用线程主体
+        System.out.println();
+        List<String> list1 = new ArrayList<String>();
+        list1.add("data");
+        if(list1.contains("no data")){
+            System.out.println("contains");
+        }else{
+            System.out.println("no contains");
+        }
+        System.out.println();
+        //System.out.println(list1);
+        //MyThread mt1 = new MyThread() ;    // 实例化对象
+        //mt1.start() ;   // 调用线程主体
     }
 
     static class MyThread extends Thread{  // 继承Thread类，作为线程的实现类

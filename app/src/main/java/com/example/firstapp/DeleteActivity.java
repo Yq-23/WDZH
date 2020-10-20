@@ -4,10 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,6 +58,7 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
                     adapter = new ArrayAdapter<String>(DeleteActivity.this,
                             android.R.layout.simple_list_item_1,list2);
                     listdelete.setAdapter(adapter);*/
+
                     listItems = (ArrayList<HashMap<String, String>>) msg.obj;
                     listItemAdapter = new SimpleAdapter(DeleteActivity.this, listItems,  R.layout.list_item,
                             new String[] { "ItemTitle", "ItemDetail" },new int[] { R.id.itemTitle, R.id.itemDetail } );
@@ -98,6 +102,7 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
                 list1.add(map);
                 //String s = (String)(str1 + "==>" + val);
                 //list1.add(s);
+
             }
             msg.obj = list1;
             handler.sendMessage(msg);
@@ -112,6 +117,7 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "onItemClick: position=" + position);
         Log.i(TAG, "onItemClick: parent=" + parent);
+
         //SimpleItemAdapter:
         listItems.remove(position);
         listItemAdapter.notifyDataSetChanged();
@@ -145,5 +151,29 @@ public class DeleteActivity extends AppCompatActivity implements Runnable,Adapte
                 }).setNegativeButton("否", null);
         builder.create().show();
         return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {//启用菜单项
+        getMenuInflater().inflate(R.menu.first_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {//处理菜单事件，设置菜单项中每一个item的功能
+        if(item.getItemId()==R.id.menu1){
+            //设置功能，与设置按钮的事件一样
+            Intent returnMain = new Intent(this,DeleteActivity.class);
+
+        }
+        if(item.getItemId()==R.id.menu3){
+            //设置功能，与设置按钮的事件一样
+            Intent returnMain = getIntent();
+            //设置resultCode及带回的数据
+            setResult(4,returnMain);
+            //返回主界面
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
