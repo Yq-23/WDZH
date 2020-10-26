@@ -9,4 +9,11 @@
     <string name="menu_3">exit</string>
     <string name="btn_openlist">list</string>
     <string name="btn_listdelete" />
+    <string name="homeframent">HomeFrament</string>
+    <string name="funcfragment">FuncFragment</string>
+    <string name="settingfragment">SettingFragment</string>
+    <string name="btn_fragme">Fragment</string>
+    <string name="first_label">first</string>
+    <string name="two_label">two</string>
+    <string name="three_label">three</string>
 </resources>

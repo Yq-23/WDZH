@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.firstapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +13,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DeleteActivity"></activity>
+        <activity android:name=".ThirdFragment"></activity>
+        <activity android:name=".SecondFragment" />
+        <activity android:name=".FirstFragment" />
+        <activity android:name=".FrameActivity_1" />
+        <activity android:name=".FrameActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingFragment"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".FuncFragment"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".HomeFragment"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".DeleteActivity" />
         <activity android:name=".List_MainActivity_1" />
         <activity android:name=".List_Activity" />
         <activity android:name=".MainActivity2">

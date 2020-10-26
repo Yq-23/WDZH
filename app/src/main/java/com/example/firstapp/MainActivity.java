@@ -15,9 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "MainActivity";
@@ -101,6 +98,9 @@ public class MainActivity extends AppCompatActivity{
         }else if(btn.getId()==R.id.btn_delete){
             Intent listdelete = new Intent(this,DeleteActivity.class);
             startActivityForResult(listdelete,3);
+        }else if(btn.getId()==R.id.btn_fragment){
+            Intent fragment = new Intent(this,FrameActivity_1.class);
+            startActivityForResult(fragment,5);
         }
     }
 
@@ -130,8 +130,9 @@ public class MainActivity extends AppCompatActivity{
     @Override
     //事件处理代码
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.menu1){
-
+        if(item.getItemId() == R.id.menu2){
+            Intent fragment = new Intent(this,FrameActivity.class);
+            startActivityForResult(fragment,4);
         }
         return super.onOptionsItemSelected(item);
     }
